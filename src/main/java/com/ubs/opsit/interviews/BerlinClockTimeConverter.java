@@ -16,16 +16,12 @@ public class BerlinClockTimeConverter implements GenericClock {
 
 	@Override
 	public String getHour(int num) {
-		return getOnOffSigns(4, getTopOnNum(num), SIGN_RED) + SEPERATOR
-				+ getOnOffSigns(4, getBottomOnNum(num), SIGN_RED);
+		return getOnOffSigns(4, getTopRowOnSigns(num), SIGN_RED) + SEPERATOR + getOnOffSigns(4, getBottomRowOnSigns(num), SIGN_RED);
 	}
 
 	@Override
 	public String getMinute(int num) {
-		return getOnOffSigns(11, getTopOnNum(num), SIGN_YELLOW).replaceAll(
-				"YYY", "YYR")
-				+ SEPERATOR
-				+ getOnOffSigns(4, getBottomOnNum(num), SIGN_YELLOW);
+		return getOnOffSigns(11, getTopRowOnSigns(num), SIGN_YELLOW).replaceAll("YYY", "YYR") + SEPERATOR + getOnOffSigns(4, getBottomRowOnSigns(num), SIGN_YELLOW);
 	}
 
 	@Override
@@ -52,23 +48,23 @@ public class BerlinClockTimeConverter implements GenericClock {
 		return sb.toString();
 	}
 
-	protected String getOnOffSigns(int lamps, int onSigns, String onSign) {
+	protected String getOnOffSigns(int lampsInClockRow, int onSigns, String onSign) {
 		String onOffSigns = "";
 		for (int i = 0; i < onSigns; i++) {
 			onOffSigns += onSign;
 		}
-		for (int i = 0; i < lamps - onSigns; i++) {
+		for (int i = 0; i < lampsInClockRow - onSigns; i++) {
 			onOffSigns += SIGN_OFF;
 		}
 		return onOffSigns;
 	}
 
-	private int getTopOnNum(int num) {
-		return (num - (num % 5)) / 5;
+	private int getTopRowOnSigns(int timeComponent) {
+		return (timeComponent - (timeComponent % 5)) / 5;
 	}
 
-	private int getBottomOnNum(int num) {
-		return num % 5;
+	private int getBottomRowOnSigns(int timeComponent) {
+		return timeComponent % 5;
 	}
 
 	@Override
@@ -81,12 +77,14 @@ public class BerlinClockTimeConverter implements GenericClock {
 		pattern = Pattern.compile("^(?:[01]\\d|2[0-4])(?::[0-5]\\d){2}$");
 		matcher = pattern.matcher(inputTime);
 		if (matcher.matches()) {
-			int[] parts = Stream.of(inputTime.split(":")).mapToInt(Integer::parseInt).toArray();
-			if (parts[0] == 24 && (parts[1] != 0 || parts[2] != 0)) {
+			int[] timeComponents = Stream.of(inputTime.split(":")).mapToInt(Integer::parseInt).toArray();
+			if (timeComponents[0] == 24 && (timeComponents[1] != 0 || timeComponents[2] != 0)) {
 				return false;
 			}
 		}
 		return matcher.matches();
 	}
+	
+
 
 }

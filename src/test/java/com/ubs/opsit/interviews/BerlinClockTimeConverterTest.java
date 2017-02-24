@@ -68,42 +68,37 @@ public class BerlinClockTimeConverterTest {
 	}
 
 	@Test
-	public void invalidTimeFormat1() throws Exception {
+	public void testWhenInputTimeIsNull() throws Exception {
 		assertEquals(false, berlinClockTimeConverter.validate(null));
 	}
 
 	@Test
-	public void invalidTimeFormat2() throws Exception {
+	public void testWhenInputTimeIsBlank() throws Exception {
 		assertEquals(false, berlinClockTimeConverter.validate(""));
 	}
 
 	@Test
-	public void invalidTimeFormat3() throws Exception {
-		assertFalse(berlinClockTimeConverter.validate("abc"));
-	}
-
-	@Test
-	public void invalidTimeFormat4() throws Exception {
+	public void testWhenInputTimeWithMinuteExceeds60() throws Exception {
 		assertFalse(berlinClockTimeConverter.validate("12:61:00"));
 	}
 
 	@Test
-	public void invalidTimeFormat5() throws Exception {
+	public void testWhenInputTimeWithHourExceeds24() throws Exception {
 		assertFalse(berlinClockTimeConverter.validate("25:00:00"));
 	}
 
 	@Test
-	public void invalidTimeFormat6() throws Exception {
+	public void testWhenInputTimeWithSecondExceeds60() throws Exception {
 		assertFalse(berlinClockTimeConverter.validate("25:00:68"));
 	}
 
 	@Test
-	public void invalidTimeFormat7() throws Exception {
+	public void testWhenInputTimeIsNotATime() throws Exception {
 		assertFalse(berlinClockTimeConverter.validate("112233"));
 	}
 	
 	@Test
-	public void validTimeFormat() throws Exception {
+	public void testWhenInputTimeIsValid() throws Exception {
 		assertTrue(berlinClockTimeConverter.validate("12:12:12"));
 	}
 
