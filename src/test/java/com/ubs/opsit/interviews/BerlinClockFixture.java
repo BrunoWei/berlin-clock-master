@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class BerlinClockFixture {
 
-    private TimeConverter berlinClockTimeConverter = new BerlinClockTimeConverter();
+    private TimeConverter berlinClockTimeConverter = new BerlinClock();
     private String theTime;
 
     @Test
